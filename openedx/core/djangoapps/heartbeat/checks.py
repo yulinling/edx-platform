@@ -106,11 +106,11 @@ def check_user_exists(request):
 def check_celery(request):
     from datetime import datetime, timedelta
     from time import sleep, time
-    from heartbeat.tasks import sample_task
+    from .tasks import sample_task
 
     now = time()
     datetimenow = datetime.now()
-    expires = datetimenow + timedelta(seconds=getattr(settings, 'PING_CELERY_TIMEOUT', PING_CELERY_TIMEOUT))
+    expires = datetimenow + timedelta(seconds=getattr(settings, 'HEARTBEAT_CELERY_TIMEOUT', HEARTBEAT_CELERY_TIMEOUT))
 
     try:
         task = sample_task.apply_async(expires=expires)
