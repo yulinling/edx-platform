@@ -32,7 +32,7 @@ class HeartbeatTestCase(ModuleStoreTestCase):
             response = self.client.get(self.heartbeat_url)
             self.assertEqual(response.status_code, 503)
             response_dict = json.loads(response.content)
-            self.assertIn('SQL', response_dict)
+            self.assertIn('sql', response_dict)
 
     def test_modulestore_fail(self):
         with patch('openedx.core.djangoapps.heartbeat.views.modulestore') as mock_modulestore:
