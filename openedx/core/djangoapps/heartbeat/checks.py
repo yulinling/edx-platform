@@ -53,7 +53,7 @@ def check_modulestore(request):
         modulestore().heartbeat()
         return 'modulestore', True, "OK"
     except HeartbeatFailure as fail:
-        return 'modulestore', False, str(fail)
+        return 'modulestore', False, unicode(fail)
 
 def check_database(request):
     from django.db import connection
@@ -62,9 +62,9 @@ def check_database(request):
     try:
         cursor.execute("SELECT CURRENT_DATE")
         cursor.fetchone()
-        return 'sql', True, str("OK")
+        return 'sql', True, "OK"
     except DatabaseError as fail:
-        return 'sql', False, str(fail)
+        return 'sql', False, unicode(fail)
 
 
 #Caching
@@ -75,20 +75,20 @@ def check_cache_set(request):
     from django.core.cache import cache
     try:
         cache.set(CACHE_KEY, CACHE_VALUE, 30)
-        return 'cache_set', True
-    except:
-        return 'cache_set', False
+        return 'cache_set', True, "OK"
+    except fail:
+        return 'cache_set', False, unicode(fail)
 
 def check_cache_get(request):
     from django.core.cache import cache
     try:
         data = cache.get(CACHE_KEY)
         if data == CACHE_VALUE:
-            return 'cache_get', True
+            return 'cache_get', True, "OK"
         else:
-            return 'cache_get', False
-    except:
-        return 'cache_get', False
+            return 'cache_get', False, "value check failed"
+    except fail:
+        return 'cache_get', False, unicode(fail)
 
 
 #User
@@ -96,10 +96,10 @@ def check_user_exists(request):
     from django.contrib.auth.models import User
     try:
         username = request.GET.get('username')
-        u = User.objects.get(username=username)
-        return 'user_exists', True
-    except:
-        return 'user_exists', False
+        User.objects.get(username=username)
+        return 'user_exists', True, "OK"
+    except fail:
+        return 'user_exists', False, unicode(fail)
 
 
 #Celery
@@ -117,8 +117,8 @@ def check_celery(request):
         while expires > datetime.now():
             if task.ready() and task.result == True:
                 finished = str(time() - now)
-                return 'celery', { 'success': True, 'time':finished }
+                return 'celery', True, unicode({ 'time':finished })
             sleep(0.25)
-        return 'celery', { 'success': False }
-    except Exception:
-        return 'celery', { 'success': False }
+        return 'celery', False, "expired"
+    except Exception as fail:
+        return 'celery', False, unicode(fail)
