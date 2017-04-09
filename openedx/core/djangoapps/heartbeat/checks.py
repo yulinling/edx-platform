@@ -3,7 +3,9 @@ from importlib import import_module
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
-from .defaults import *
+from .defaults import HEARTBEAT_DEFAULT_CHECKS,\
+    HEARTBEAT_EXTENDED_DEFAULT_CHECKS,\
+    HEARTBEAT_CELERY_TIMEOUT
 
 def checks(request):
     """
@@ -15,7 +17,11 @@ def checks(request):
 
     #Taken straight from Django
     #If there is a better way, I don't know it
-    for path in getattr(settings, 'HEARTBEAT_CHECKS', HEARTBEAT_DEFAULT_CHECKS):
+    list_of_checks = getattr(settings, 'HEARTBEAT_CHECKS', HEARTBEAT_DEFAULT_CHECKS)
+    if('extended' in request.GET):
+        list_of_checks += getattr(settings, 'HEARTBEAT_EXTENDED_CHECKS', HEARTBEAT_EXTENDED_DEFAULT_CHECKS)
+
+    for path in list_of_checks:
             i = path.rfind('.')
             module, attr = path[:i], path[i+1:]
             try:
