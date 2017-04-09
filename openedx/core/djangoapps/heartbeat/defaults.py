@@ -1,4 +1,4 @@
 HEARTBEAT_DEFAULT_CHECKS = (
-    'openedx.core.djangoapps.heartbeat.checks.check_modulestore',
-    'openedx.core.djangoapps.heartbeat.checks.check_database',
+    '.checks.check_modulestore',
+    '.checks.check_database',
 )

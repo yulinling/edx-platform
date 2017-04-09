@@ -19,19 +19,21 @@ def checks(request):
             i = path.rfind('.')
             module, attr = path[:i], path[i+1:]
             try:
-                mod = import_module(module)
+                if(module[0] == '.'): #Relative path, assume relative to this app
+                    mod = import_module(module, __package__)
+                else:
+                    mod = import_module(module)
+                func = getattr(mod, attr)
+
+                check_name, is_ok, message = func(request)
+                response_dict[check_name] =  {
+                    'status': is_ok,
+                    'message': message
+                }
             except ImportError as e:
                 raise ImproperlyConfigured('Error importing module %s: "%s"' % (module, e))
-            try:
-                func = getattr(mod, attr)
             except AttributeError:
                 raise ImproperlyConfigured('Module "%s" does not define a "%s" callable' % (module, attr))
-
-            check_name, is_ok, message = func(request)
-            response_dict[check_name] =  {
-                'status': is_ok,
-                'message': message
-            }
 
     return response_dict
 
