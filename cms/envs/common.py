@@ -96,6 +96,8 @@ from lms.envs.common import (
     SUPPORT_SITE_LINK,
 
     CONTACT_EMAIL,
+    # Video Image settings
+    VIDEO_IMAGE_SETTINGS,
 )
 from path import Path as path
 from warnings import simplefilter
