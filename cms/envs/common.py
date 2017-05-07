@@ -1262,7 +1262,7 @@ COMPREHENSIVE_THEME_LOCALE_PATHS = []
 # Although Studio does not exable OAuth2 Provider capability, the new approach
 # to generating test databases will discover and try to create all tables
 # and this setting needs to be present
-OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth2_provider.Application'
+OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth_dispatch.Application'
 
 # Used with Email sending
 RETRY_ACTIVATION_EMAIL_MAX_ATTEMPTS = 5

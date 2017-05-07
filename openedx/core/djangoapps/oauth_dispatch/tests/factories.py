@@ -3,11 +3,10 @@
 from datetime import datetime, timedelta
 
 import factory
+import pytz
 from factory.django import DjangoModelFactory
 from factory.fuzzy import FuzzyText
-import pytz
-
-from oauth2_provider.models import Application, AccessToken, RefreshToken
+from oauth2_provider.models import AccessToken, RefreshToken, Application
 
 from student.tests.factories import UserFactory
 
@@ -17,10 +16,8 @@ class ApplicationFactory(DjangoModelFactory):
         model = Application
 
     user = factory.SubFactory(UserFactory)
-    client_id = factory.Sequence(u'client_{0}'.format)
-    client_secret = 'some_secret'
-    client_type = 'confidential'
-    authorization_grant_type = 'Client credentials'
+    client_type = Application.CLIENT_CONFIDENTIAL
+    authorization_grant_type = Application.GRANT_AUTHORIZATION_CODE
 
 
 class AccessTokenFactory(DjangoModelFactory):

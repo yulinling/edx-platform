@@ -3,10 +3,11 @@ Specialized models for oauth_dispatch djangoapp
 """
 
 from datetime import datetime
-from django.db import models
-from pytz import utc
 
+from django.db import models
+from oauth2_provider.models import AbstractApplication
 from oauth2_provider.settings import oauth2_settings
+from pytz import utc
 
 
 class RestrictedApplication(models.Model):
@@ -43,3 +44,12 @@ class RestrictedApplication(models.Model):
         is set at the beginning of the epoch which is Jan. 1, 1970
         """
         return access_token.expires == datetime(1970, 1, 1, tzinfo=utc)
+
+
+class Application(AbstractApplication):
+    """ OAuth application model.
+
+    Allows for declared authorization grant type in addition to the client credentials grant.
+    """
+    def allows_grant_type(self, *grant_types):
+        return bool({self.authorization_grant_type, self.GRANT_CLIENT_CREDENTIALS}.intersection(set(grant_types)))
