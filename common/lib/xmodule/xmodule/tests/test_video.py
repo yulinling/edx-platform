@@ -694,6 +694,7 @@ class VideoExportTestCase(VideoDescriptorTestBase):
         self.descriptor.download_video = True
         self.descriptor.transcripts = {'ua': 'ukrainian_translation.srt', 'ge': 'german_translation.srt'}
         self.descriptor.edx_video_id = 'test_edx_video_id'
+        self.descriptor.course_id = 'org.0/course_0/Run_0'
 
         xml = self.descriptor.definition_to_xml(None)  # We don't use the `resource_fs` parameter
         parser = etree.XMLParser(remove_blank_text=True)

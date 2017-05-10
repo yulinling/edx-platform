@@ -332,15 +332,28 @@ def _get_index_videos(course):
     """
     Returns the information about each video upload required for the video list
     """
+    course_id = unicode(course.id)
     default_video_image_url = _get_default_video_image_url()
+    attrs = ['edx_video_id', 'client_video_id', 'created', 'duration', 'status', 'courses']
 
-    return list(
-        {
-            attr: default_video_image_url if attr == 'course_video_image_url' and video[attr] is None else video[attr]
-            for attr in ['edx_video_id', 'client_video_id', 'created', 'duration', 'status', 'course_video_image_url']
-        }
-        for video in _get_videos(course)
-    )
+    def _get_values(video):
+        """
+        Get data for predefined video attributes.
+        """
+        values = {}
+        for attr in attrs:
+            if attr == 'courses':
+                course = filter(lambda c: course_id in c, video['courses'])
+                (__, image_url), = course[0].items()
+                values['course_video_image_url'] = image_url or default_video_image_url
+            else:
+                values[attr] = video[attr]
+
+        return values
+
+    return [
+        _get_values(video) for video in _get_videos(course)
+    ]
 
 
 def videos_index_html(course):
