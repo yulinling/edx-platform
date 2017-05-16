@@ -868,7 +868,7 @@ INSTALLED_APPS = (
     'django_nose',
 
     # For CMS
-    'contentstore.apps.ContentstoreConfig',
+    'contentstore',
 
     'openedx.core.djangoapps.contentserver',
     'course_creators',
