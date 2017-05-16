@@ -1,0 +1,12 @@
+<%page expression_filter="h"/>
+<%!
+from openedx.core.djangoapps.lang_pref.api import language_selector_config, released_languages
+%>
+
+<%def name="get_language_selector_config()"><%
+    return language_selector_config(context.get('language_selector_config_overrides', None))
+%></%def>
+
+<%def name="get_released_languages()"><%
+    return released_languages()
+%></%def>

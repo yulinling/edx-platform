@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Tests for the language API. """
 
+from mock import patch
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.utils import translation
@@ -8,8 +9,8 @@ from django.contrib.auth.models import User
 import ddt
 
 from openedx.core.djangoapps.dark_lang.models import DarkLangConfig
-
 from openedx.core.djangoapps.lang_pref import api as language_api
+from openedx.core.djangoapps.site_configuration.tests.test_util import with_site_configuration_context
 
 EN = language_api.Language('en', 'English')
 ES_419 = language_api.Language('es-419', u'Español (Latinoamérica)')
@@ -20,6 +21,73 @@ class LanguageApiTest(TestCase):
     """
     Tests of the language APIs.
     """
+
+    @ddt.data(
+        # Should return base config
+        (
+            {'LANGUAGE_SELECTOR': {'HEADER': False, 'FOOTER': False}},
+            {},
+            {},
+            {'HEADER': False, 'FOOTER': False}
+        ),
+
+        # SHOW_LANGUAGE_SELECTOR base config setting should supercede HEADER setting if True
+        (
+            {'LANGUAGE_SELECTOR': {'HEADER': False, 'FOOTER': False}, 'SHOW_LANGUAGE_SELECTOR': True},
+            {},
+            {},
+            {'HEADER': True, 'FOOTER': False}
+        ),
+
+        # SHOW_LANGUAGE_SELECTOR base config setting should not supercede HEADER setting if False
+        (
+            {'LANGUAGE_SELECTOR': {'HEADER': True, 'FOOTER': False}, 'SHOW_LANGUAGE_SELECTOR': False},
+            {},
+            {},
+            {'HEADER': True, 'FOOTER': False}
+        ),
+
+        # Site config settings should supercede base config
+        (
+            {'LANGUAGE_SELECTOR': {'HEADER': False, 'FOOTER': False}},
+            {'LANGUAGE_SELECTOR': {'FOOTER': True}},
+            {},
+            {'HEADER': False, 'FOOTER': True}
+        ),
+
+        # SHOW_LANGUAGE_SELECTOR site config setting should supercede HEADER setting if True
+        (
+            {'LANGUAGE_SELECTOR': {'HEADER': False, 'FOOTER': False}},
+            {'SHOW_LANGUAGE_SELECTOR': True},
+            {},
+            {'HEADER': True, 'FOOTER': False}
+        ),
+
+        # SHOW_LANGUAGE_SELECTOR site config setting should not supercede HEADER setting if False
+        (
+            {'LANGUAGE_SELECTOR': {'HEADER': True, 'FOOTER': False}},
+            {'SHOW_LANGUAGE_SELECTOR': False},
+            {},
+            {'HEADER': True, 'FOOTER': False}
+        ),
+
+        # Overrides should supercede all other config settings
+        (
+            {'LANGUAGE_SELECTOR': {'HEADER': False, 'FOOTER': False}, 'SHOW_LANGUAGE_SELECTOR': True},
+            {'LANGUAGE_SELECTOR': {'FOOTER': True}},
+            {'FOOTER': False, 'HEADER': False},
+            {'HEADER': False, 'FOOTER': False}
+        ),
+    )
+    @ddt.unpack
+    def test_language_selector_config(self, base_config, site_config, overrides, expected_config):
+        """
+        Verify that the language selector config is correct.
+        """
+        with patch.dict('django.conf.settings.FEATURES', base_config):
+            with with_site_configuration_context(configuration=site_config):
+                self.assertEqual(language_api.language_selector_config(overrides), expected_config)
+
     @ddt.data(*[
         ('en', [], [], []),
         ('en', [EN], [], [EN]),

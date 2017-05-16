@@ -2,16 +2,48 @@
 """ Python API for language and translation management. """
 
 from collections import namedtuple
+from copy import deepcopy
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
+
 from openedx.core.djangoapps.dark_lang.models import DarkLangConfig
+from openedx.core.djangoapps.site_configuration.helpers import get_value
 
 
 # Named tuples can be referenced using object-like variable
 # deferencing, making the use of tuples more readable by
 # eliminating the need to see the context of the tuple packing.
 Language = namedtuple('Language', 'code name')
+
+
+def language_selector_config(overrides=None):
+    """
+    Retrieve configuration for the language selector.
+
+    Arguments:
+        overrides (dictionary): An optional dictionary of configuration overrides.
+    Returns:
+        dictionary: The configuration.
+    """
+    # Get the base config
+    config = deepcopy(settings.FEATURES.get('LANGUAGE_SELECTOR', {}))
+
+    # Allow custom site/microsite configuration overrides
+    config.update(deepcopy(get_value('LANGUAGE_SELECTOR', {})))
+
+    # The SHOW_LANGUAGE_SELECTOR setting is deprecated, but might still be in use on some installations.
+    # If it is present and True, it should override what has been set via LANGUAGE_SELECTOR, which may have been
+    # pre-filled with default values.
+    header_config = get_value('SHOW_LANGUAGE_SELECTOR', settings.FEATURES.get('SHOW_LANGUAGE_SELECTOR', False))
+    if header_config:
+        config.update({'HEADER': header_config})
+
+    # Allow config overrides.
+    if overrides:
+        config.update(deepcopy(overrides))
+
+    return config
 
 
 def released_languages():
