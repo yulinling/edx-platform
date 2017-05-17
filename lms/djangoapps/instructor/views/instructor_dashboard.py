@@ -514,7 +514,6 @@ def _section_cohort_management(course, access):
         ),
         'cohorts_url': reverse('cohorts', kwargs={'course_key_string': unicode(course_key)}),
         'upload_cohorts_csv_url': reverse('add_users_to_cohorts', kwargs={'course_id': unicode(course_key)}),
-        'discussion_topics_url': reverse('cohort_discussion_topics', kwargs={'course_key_string': unicode(course_key)}),
         'verified_track_cohorting_url': reverse(
             'verified_track_cohorting', kwargs={'course_key_string': unicode(course_key)}
         ),
@@ -523,20 +522,16 @@ def _section_cohort_management(course, access):
 
 
 def _section_discussions_management(course, access):
-    """ Provide data for the corresponding cohort management section """
+    """ Provide data for the corresponding discussion management section """
     course_key = course.id
-    ccx_enabled = hasattr(course_key, 'ccx')
     section_data = {
         'section_key': 'discussions_management',
         'section_display_name': _('Discussions'),
-        'access': access,
-        'ccx_is_enabled': ccx_enabled,
-        'discussion_topics_url': reverse('cohort_discussion_topics', kwargs={'course_key_string': unicode(course_key)}),
+        'discussion_topics_url': reverse('divided_discussion_topics', kwargs={'course_key_string': unicode(course_key)}),
         'course_discussion_settings': reverse(
             'course_discussions_settings',
             kwargs={'course_key_string': unicode(course_key)}
         ),
-
     }
     return section_data
 

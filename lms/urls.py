@@ -557,11 +557,11 @@ urlpatterns += (
         name='debug_cohort_mgmt',
     ),
     url(
-        r'^courses/{}/cohorts/topics$'.format(
+        r'^courses/{}/discussion/topics$'.format(
             settings.COURSE_KEY_PATTERN,
         ),
-        'openedx.core.djangoapps.course_groups.views.cohort_discussion_topics',
-        name='cohort_discussion_topics',
+        'openedx.core.djangoapps.course_groups.views.divided_discussion_topics',
+        name='divided_discussion_topics',
     ),
     url(
         r'^courses/{}/verified_track_content/settings'.format(

@@ -228,7 +228,7 @@ class TestInstructorDashboard(ModuleStoreTestCase, LoginEnrollmentTestCase, XssT
         Test analytics dashboard message is shown
         """
         response = self.client.get(self.url)
-        analytics_section = '''<li class="nav-item"><button type="button" class="btn-link" data-section="data_download">Data Download</button></li>'''  # pylint: disable=line-too-long
+        analytics_section = '<li class="nav-item"><button type="button" class="btn-link" data-section="instructor_analytics">Analytics</button></li>'  # pylint: disable=line-too-long
         self.assertIn(analytics_section, response.content)
 
         # link to dashboard shown
@@ -338,7 +338,6 @@ class TestInstructorDashboard(ModuleStoreTestCase, LoginEnrollmentTestCase, XssT
 
         ItemFactory.create(parent_location=self.course.location, category="openassessment")
         response = self.client.get(self.url)
-
         self.assertIn(ora_section, response.content)
 
     def test_open_response_assessment_page_orphan(self):

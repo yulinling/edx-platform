@@ -198,6 +198,7 @@ def course_cohort_settings_handler(request, course_key_string):
         Updates the cohort settings for the course. Returns the JSON representation of updated settings.
     """
     course_key = CourseKey.from_string(course_key_string)
+    # Although this course data is not used this method will return 404 is user is not staff
     course = get_course_with_access(request.user, 'staff', course_key)
 
     if request.method == 'PATCH':
@@ -205,11 +206,6 @@ def course_cohort_settings_handler(request, course_key_string):
 
         if 'is_cohorted' in request.json:
             settings_to_change['is_cohorted'] = request.json.get('is_cohorted')
-
-        if 'always_cohort_inline_discussions' in request.json:
-            settings_to_change['always_divide_inline_discussions'] = request.json.get(
-                'always_cohort_inline_discussions'
-            )
 
         if not settings_to_change:
             return JsonResponse({"error": unicode("Bad Request")}, 400)
@@ -483,9 +479,9 @@ def debug_cohort_mgmt(request, course_key_string):
 
 @expect_json
 @login_required
-def cohort_discussion_topics(request, course_key_string):
+def divided_discussion_topics(request, course_key_string):
     """
-    The handler for cohort discussion categories requests.
+    The handler for divided discussion categories requests.
     This will raise 404 if user is not staff.
 
     Returns the JSON representation of discussion topics w.r.t categories for the course.

@@ -711,8 +711,8 @@ class DiscussionManagementSection(PageObject):
         """
         Returns the visibility status of divide discussion controls.
         """
-        return (self.q(css=self._bounded_selector('.cohort-course-wide-discussions-nav')).visible and
-                self.q(css=self._bounded_selector('.cohort-inline-discussions-nav')).visible)
+        return (self.q(css=self._bounded_selector('.course-wide-discussions-nav')).visible and
+                self.q(css=self._bounded_selector('.inline-discussions-nav')).visible)
 
     def divided_discussion_heading_is_visible(self, key):
         """

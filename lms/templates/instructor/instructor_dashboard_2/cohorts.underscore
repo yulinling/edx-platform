@@ -49,14 +49,5 @@
                 %>
             </p>
         </div>
-
-        <hr class="divider divider-lv1" />
-
-        <!-- Discussion Topics. -->
-        <div class="cohort-discussions-nav is-hidden" id="cohort-discussions-management" tabindex="-1">
-            <div class="cohort-course-wide-discussions-nav"></div>
-            <div class="cohort-inline-discussions-nav"></div>
-        </div>
-
     </div>
 <% } %>

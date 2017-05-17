@@ -22,7 +22,7 @@
                             'always_divide_inline_discussions'),
                             inlineDiscussions = this.model.get('inline_discussions');
 
-                        HtmlUtils.setHtml(this.$('.cohort-inline-discussions-nav'), this.template({
+                        HtmlUtils.setHtml(this.$('.inline-discussions-nav'), this.template({
                             inlineDiscussionTopicsHtml: this.getInlineDiscussionsHtml(inlineDiscussions),
                             alwaysDivideInlineDiscussions: alwaysDivideInlineDiscussions
                         }));
