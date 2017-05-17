@@ -20,7 +20,9 @@
 
                 render: function() {
                     HtmlUtils.setHtml(this.$el, this.template({availableSchemes: this.getDivisionSchemeData()}));
-                    this.divisionSchemeChanged();
+                    var selectedScheme = this.getSelectedScheme(),
+                        topicNav = this.getTopicNav();
+                    this.hideTopicNav(selectedScheme, topicNav);
                     this.showDiscussionTopics();
                     return this;
                 },
@@ -50,9 +52,17 @@
                     ];
                 },
 
+                getSelectedScheme: function() {
+                    return this.$('input[name="division-scheme"]:checked').val();
+                },
+
+                getTopicNav: function() {
+                    return this.$('.topic-division-nav');
+                },
+
                 divisionSchemeChanged: function() {
-                    var selectedScheme = this.$('input[name="division-scheme"]:checked').val(),
-                        topicNav = this.$('.topic-division-nav'),
+                    var selectedScheme = this.getSelectedScheme(),
+                        topicNav = this.getTopicNav(),
                         messageSpan = this.$('.division-scheme-message');
 
                     this.hideTopicNav(selectedScheme, topicNav);
@@ -69,7 +79,6 @@
                 },
 
                 showSelectMessage: function(selectedScheme, messageSpan) {
-                    // TODO need to call the proper template text based on selectedScheme
                     switch (selectedScheme) {
                         case 'none':
                             messageSpan.text(gettext('Discussion topics in the course are not divided.'));
