@@ -1,11 +1,9 @@
 """
 Tests for the Studio authoring XBlock mixin.
 """
+from course_modes.tests.factories import CourseModeFactory
 from django.conf import settings
 from django.test.utils import override_settings
-
-from course_modes.tests.factories import CourseModeFactory
-
 from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
 from xmodule.modulestore.tests.factories import CourseFactory, ItemFactory
 from xmodule.partitions.partitions import (
@@ -18,8 +16,8 @@ class AuthoringMixinTestCase(ModuleStoreTestCase):
     Tests the studio authoring XBlock mixin.
     """
     GROUP_NO_LONGER_EXISTS = "This group no longer exists"
-    NO_CONTENT_OR_ENROLLMENT_GROUPS = "No visibility settings are defined for this component"
-    NO_CONTENT_ENROLLMENT_TRACK_ENABLED = "specific groups of learners based either on their enrollment track, or by content groups that you create"
+    NO_CONTENT_OR_ENROLLMENT_GROUPS = "Access to this component is not restricted"
+    NO_CONTENT_ENROLLMENT_TRACK_ENABLED = "specific groups of learners based either on their enrollment track or by content groups that you create"
     NO_CONTENT_ENROLLMENT_TRACK_DISABLED = "specific groups of learners based on content groups that you create"
     CONTENT_GROUPS_TITLE = "Content Groups"
     ENROLLMENT_GROUPS_TITLE = "Enrollment Track Groups"
