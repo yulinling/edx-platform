@@ -338,7 +338,6 @@ class TestInstructorDashboard(ModuleStoreTestCase, LoginEnrollmentTestCase, XssT
 
         ItemFactory.create(parent_location=self.course.location, category="openassessment")
         response = self.client.get(self.url)
-
         self.assertIn(ora_section, response.content)
 
     def test_open_response_assessment_page_orphan(self):

@@ -84,7 +84,7 @@ define(['backbone', 'jquery', 'edx-ui-toolkit/js/utils/spec-helpers/ajax-helpers
             };
 
             createCohortsView = function(test, options) {
-                var cohortsJson, cohorts, contentGroups, cohortSettings, cohortDiscussions;
+                var cohortsJson, cohorts, contentGroups, cohortSettings;
                 options = options || {};
                 cohortsJson = options.cohorts ? {cohorts: options.cohorts} : createMockCohorts();
                 cohorts = new CohortCollection(cohortsJson, {parse: true});

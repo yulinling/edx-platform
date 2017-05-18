@@ -28,14 +28,14 @@ from ..views import (
     course_cohort_settings_handler, course_discussions_settings_handler,
     cohort_handler, users_in_cohort,
     add_users_to_cohort, remove_user_from_cohort,
-    link_cohort_to_partition_group, divide_discussion_topics
+    link_cohort_to_partition_group, divided_discussion_topics
 )
 from ..cohorts import (
     get_cohort, get_cohort_by_name, get_cohort_by_id,
     DEFAULT_COHORT_NAME, get_group_info_for_cohort
 )
 from .helpers import (
-    config_course_cohorts, config_course_cohorts_legacy, CohortFactory, CourseCohortFactory, topic_name_to_id
+    config_course_cohorts, config_course_discussions, config_course_cohorts_legacy, CohortFactory, CourseCohortFactory, topic_name_to_id
 )
 
 
@@ -126,6 +126,10 @@ class CohortViewsTestCase(ModuleStoreTestCase):
         config_course_cohorts(
             self.course,
             is_cohorted=True,
+        )
+
+        config_course_discussions(
+            self.course,
             discussion_topics=discussion_topics,
             divided_discussions=divided_discussions
         )
@@ -195,9 +199,16 @@ class CourseDiscussionsHandlerTestCase(CohortViewsTestCase):
             u'id': 1
         }
 
+    def test_non_staff(self):
+        """
+        Verify that we cannot access course_discussions_settings_handler if we're a non-staff user.
+        """
+        self._verify_non_staff_cannot_access(course_discussions_settings_handler, "GET", [unicode(self.course.id)])
+        self._verify_non_staff_cannot_access(course_discussions_settings_handler, "PATCH", [unicode(self.course.id)])
+
     def test_update_always_cohort_inline_discussion_settings(self):
         """
-        Verify that course_cohort_settings_handler is working for always_cohort_inline_discussions via HTTP PATCH.
+        Verify that course_discussions_settings_handler is working for always_divide_inline_discussions via HTTP PATCH.
         """
         config_course_cohorts(self.course, is_cohorted=True)
 
@@ -214,14 +225,15 @@ class CourseDiscussionsHandlerTestCase(CohortViewsTestCase):
 
     def test_update_course_wide_discussion_settings(self):
         """
-        Verify that course_cohort_settings_handler is working for cohorted_course_wide_discussions via HTTP PATCH.
+        Verify that course_discussions_settings_handler is working for divided_course_wide_discussions via HTTP PATCH.
         """
         # course-wide discussion
         discussion_topics = {
             "Topic B": {"id": "Topic B"},
         }
 
-        config_course_cohorts(self.course, is_cohorted=True, discussion_topics=discussion_topics)
+        config_course_cohorts(self.course, is_cohorted=True)
+        config_course_discussions(self.course, discussion_topics=discussion_topics)
 
         response = self.get_handler(self.course, handler=course_discussions_settings_handler)
 
@@ -235,7 +247,7 @@ class CourseDiscussionsHandlerTestCase(CohortViewsTestCase):
 
     def test_update_inline_discussion_settings(self):
         """
-        Verify that course_cohort_settings_handler is working for cohorted_inline_discussions via HTTP PATCH.
+        Verify that course_discussions_settings_handler is working for divided_inline_discussions via HTTP PATCH.
         """
         config_course_cohorts(self.course, is_cohorted=True)
 
@@ -262,7 +274,7 @@ class CourseDiscussionsHandlerTestCase(CohortViewsTestCase):
 
     def test_get_settings(self):
         """
-        Verify that course_cohort_settings_handler is working for HTTP GET.
+        Verify that course_discussions_settings_handler is working for HTTP GET.
         """
         divided_inline_discussions, divided_course_wide_discussions = self.create_divided_discussions()
 
@@ -278,7 +290,7 @@ class CourseDiscussionsHandlerTestCase(CohortViewsTestCase):
 
     def test_update_settings_with_invalid_field_data_type(self):
         """
-        Verify that course_cohort_settings_handler return HTTP 400 if field data type is incorrect.
+        Verify that course_discussions_settings_handler return HTTP 400 if field data type is incorrect.
         """
         config_course_cohorts(self.course, is_cohorted=True)
 
@@ -1271,7 +1283,7 @@ class CourseDividedDiscussionTopicsTestCase(CohortViewsTestCase):
         """
         Verify that we cannot access divide_discussion_topics if we're a non-staff user.
         """
-        self._verify_non_staff_cannot_access(divide_discussion_topics, "GET", [unicode(self.course.id)])
+        self._verify_non_staff_cannot_access(divided_discussion_topics, "GET", [unicode(self.course.id)])
 
     def test_get_discussion_topics(self):
         """
@@ -1280,7 +1292,7 @@ class CourseDividedDiscussionTopicsTestCase(CohortViewsTestCase):
         # create inline & course-wide discussion to verify the different map.
         self.create_divided_discussions()
 
-        response = self.get_handler(self.course, handler=divide_discussion_topics)
+        response = self.get_handler(self.course, handler=divided_discussion_topics)
         start_date = response['inline_discussions']['subcategories']['Chapter']['start_date']
         expected_response = {
             "course_wide_discussions": {

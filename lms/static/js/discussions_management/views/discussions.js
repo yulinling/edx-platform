@@ -17,7 +17,6 @@
 
                 render: function() {
                     HtmlUtils.setHtml(this.$el, this.template({}));
-
                     this.showDiscussionTopics();
                     return this;
                 },

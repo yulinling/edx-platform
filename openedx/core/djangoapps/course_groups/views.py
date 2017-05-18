@@ -198,6 +198,7 @@ def course_cohort_settings_handler(request, course_key_string):
         Updates the cohort settings for the course. Returns the JSON representation of updated settings.
     """
     course_key = CourseKey.from_string(course_key_string)
+    # Although this course data is not used this method will return 404 is user is not staff
     course = get_course_with_access(request.user, 'staff', course_key)
 
     if request.method == 'PATCH':

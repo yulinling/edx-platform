@@ -532,7 +532,6 @@ def _section_discussions_management(course, access):
             'course_discussions_settings',
             kwargs={'course_key_string': unicode(course_key)}
         ),
-
     }
     return section_data
 
