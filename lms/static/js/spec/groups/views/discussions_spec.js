@@ -1,14 +1,14 @@
 define(['backbone', 'jquery', 'edx-ui-toolkit/js/utils/spec-helpers/ajax-helpers',
     'common/js/spec_helpers/template_helpers',
     'js/discussions_management/views/discussions',
-    'js/groups/views/course_cohort_settings_notification', 'js/discussions_management/models/divide_discussions',
+    'js/groups/views/course_cohort_settings_notification', 'js/discussions_management/models/course_discussions_detail',
     'js/discussions_management/views/divided_discussions',
     'js/discussions_management/views/divided_discussions_course_wide',
     'js/discussions_management/views/divided_discussions_inline',
     'js/discussions_management/models/course_discussions_settings'
 ],
     function(Backbone, $, AjaxHelpers, TemplateHelpers, DiscussionsView,
-             CourseCohortSettingsNotificationView, DiscussionTopicsSettingsModel,
+             CourseCohortSettingsNotificationView, CourseDiscussionTopicDetailsModel,
              CohortDiscussionsView, CohortCourseWideDiscussionsView, CohortInlineDiscussionsView,
              CourseDiscussionsSettingsModel) {
         'use strict';
@@ -87,7 +87,7 @@ define(['backbone', 'jquery', 'edx-ui-toolkit/js/utils/spec-helpers/ajax-helpers
             };
 
             createMockCohortDiscussions = function(allCohorted) {
-                return new DiscussionTopicsSettingsModel(
+                return new CourseDiscussionTopicDetailsModel(
                     createMockCohortDiscussionsJson(allCohorted)
                 );
             };
@@ -118,7 +118,7 @@ define(['backbone', 'jquery', 'edx-ui-toolkit/js/utils/spec-helpers/ajax-helpers
                     el: $('.discussions-management'),
                     discussionSettings: discussionSettings,
                     context: {
-                        discussionTopicsSettingsModel: dividedDiscussions
+                        courseDiscussionTopicDetailsModel: dividedDiscussions
                     }
                 });
                 discussionsView.render();
@@ -192,8 +192,8 @@ define(['backbone', 'jquery', 'edx-ui-toolkit/js/utils/spec-helpers/ajax-helpers
                         createDiscussionsView(this);
                         assertCohortedTopics(courseWideView, 'course-wide');
 
-                        expect($('.course-wide-discussion-topics .cohorted-text').length).toBe(2);
-                        expect($('.course-wide-discussion-topics .cohorted-text.hidden').length).toBe(1);
+                        expect($('.course-wide-discussion-topics .divided-discussion-text').length).toBe(2);
+                        expect($('.course-wide-discussion-topics .divided-discussion-text.hidden').length).toBe(1);
                     });
 
                     it('enables the "Save" button after changing checkbox', function() {
@@ -473,7 +473,7 @@ define(['backbone', 'jquery', 'edx-ui-toolkit/js/utils/spec-helpers/ajax-helpers
                                 children: []
                             }
                         };
-                        options = {dividedDiscussions: new DiscussionTopicsSettingsModel(topicsJson)};
+                        options = {dividedDiscussions: new CourseDiscussionTopicDetailsModel(topicsJson)};
                         createDiscussionsView(this, options);
 
                         expectedTitle = 'No content-specific discussion topics exist.';

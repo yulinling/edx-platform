@@ -28,7 +28,7 @@ from ..views import (
     course_cohort_settings_handler, course_discussions_settings_handler,
     cohort_handler, users_in_cohort,
     add_users_to_cohort, remove_user_from_cohort,
-    link_cohort_to_partition_group, cohort_discussion_topics
+    link_cohort_to_partition_group, divide_discussion_topics
 )
 from ..cohorts import (
     get_cohort, get_cohort_by_name, get_cohort_by_id,
@@ -1262,25 +1262,25 @@ class RemoveUserFromCohortTestCase(CohortViewsTestCase):
 
 @attr(shard=2)
 @skip_unless_lms
-class CourseCohortDiscussionTopicsTestCase(CohortViewsTestCase):
+class CourseDividedDiscussionTopicsTestCase(CohortViewsTestCase):
     """
-    Tests the `cohort_discussion_topics` view.
+    Tests the `divide_discussion_topics` view.
     """
 
     def test_non_staff(self):
         """
-        Verify that we cannot access cohort_discussion_topics if we're a non-staff user.
+        Verify that we cannot access divide_discussion_topics if we're a non-staff user.
         """
-        self._verify_non_staff_cannot_access(cohort_discussion_topics, "GET", [unicode(self.course.id)])
+        self._verify_non_staff_cannot_access(divide_discussion_topics, "GET", [unicode(self.course.id)])
 
     def test_get_discussion_topics(self):
         """
-        Verify that course_cohort_settings_handler is working for HTTP GET.
+        Verify that divide_discussion_topics is working for HTTP GET.
         """
         # create inline & course-wide discussion to verify the different map.
         self.create_divided_discussions()
 
-        response = self.get_handler(self.course, handler=cohort_discussion_topics)
+        response = self.get_handler(self.course, handler=divide_discussion_topics)
         start_date = response['inline_discussions']['subcategories']['Chapter']['start_date']
         expected_response = {
             "course_wide_discussions": {

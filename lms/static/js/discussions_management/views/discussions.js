@@ -3,8 +3,8 @@
     define(['jquery', 'underscore', 'backbone', 'gettext',
         'js/discussions_management/views/divided_discussions_inline',
         'js/discussions_management/views/divided_discussions_course_wide',
-        'edx-ui-toolkit/js/utils/html-utils',
-        'string_utils'],
+        'edx-ui-toolkit/js/utils/html-utils'
+    ],
 
         function($, _, Backbone, gettext, InlineDiscussionsView, CourseWideDiscussionsView, HtmlUtils) {
             var DiscussionsView = Backbone.View.extend({
@@ -31,7 +31,7 @@
                     if (!this.CourseWideDiscussionsView) {
                         this.CourseWideDiscussionsView = new CourseWideDiscussionsView({
                             el: dividedDiscussionsElement,
-                            model: this.context.discussionTopicsSettingsModel,
+                            model: this.context.courseDiscussionTopicDetailsModel,
                             discussionSettings: this.discussionSettings
                         }).render();
                     }
@@ -39,7 +39,7 @@
                     if (!this.InlineDiscussionsView) {
                         this.InlineDiscussionsView = new InlineDiscussionsView({
                             el: dividedDiscussionsElement,
-                            model: this.context.discussionTopicsSettingsModel,
+                            model: this.context.courseDiscussionTopicDetailsModel,
                             discussionSettings: this.discussionSettings
                         }).render();
                     }

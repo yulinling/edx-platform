@@ -15,7 +15,7 @@
                     },
 
                     render: function() {
-                        HtmlUtils.setHtml(this.$('.cohort-course-wide-discussions-nav'), this.template({
+                        HtmlUtils.setHtml(this.$('.course-wide-discussions-nav'), this.template({
                             courseWideTopicsHtml: this.getCourseWideDiscussionsHtml(
                                 this.model.get('course_wide_discussions')
                             )
