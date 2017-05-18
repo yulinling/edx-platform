@@ -18,7 +18,7 @@
                     el: $discussionsManagementElement,
                     discussionSettings: courseDiscussionSettings,
                     context: {
-                        courseDiscussionTopicDetailsModel: discussionTopicsSettings,
+                        courseDiscussionTopicDetailsModel: discussionTopicsSettings
                     }
                 });
 

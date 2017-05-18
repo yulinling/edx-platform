@@ -125,7 +125,7 @@ def is_course_cohorted(course_key):
 def get_course_cohort_id(course_key):
     """
     Given a course key, return the int id for the cohort settings.
-    
+
     Raises:
         Http404 if the course doesn't exist.
     """
