@@ -164,6 +164,12 @@
     }
   }
 
+  .thumbnail-error {
+    padding-bottom: 0;
+    border-bottom: none;
+    background-color: #f9f9f9;
+  }
+
   $thumbnail-width: ($baseline*7.5);
   $thumbnail-height: ($baseline*5);
 

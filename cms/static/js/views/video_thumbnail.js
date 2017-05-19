@@ -48,6 +48,11 @@ define(
                 this.template = HtmlUtils.template(VideoThumbnailTemplate);
                 this.imageUploadURL = options.imageUploadURL;
                 this.action = this.model.get('course_video_image_url') ? 'edit' : 'upload';
+                this.videoImageSupportedFileFormats = options.videoImageSupportedFileFormats;
+                //this.videoImageMaxFileSize: this.videoImageMaxFileSize,
+                //this.videoImageMinFileSize: this.videoImageMinFileSize,
+                this.videoImageMaxFileSize: 2097152,
+                this.videoImageMinFileSize: 2048,
                 _.bindAll(
                     this, 'render', 'chooseFile', 'imageSelected', 'imageUploadSucceeded', 'imageUploadFailed',
                     'showHoverState', 'hideHoverState'
@@ -63,11 +68,35 @@ define(
                         videoId: this.model.get('edx_video_id'),
                         actionInfo: this.actionsInfo[this.action],
                         thumbnailURL: this.model.get('course_video_image_url'),
-                        duration: this.getDuration(this.model.get('duration'))
+                        duration: this.getDuration(this.model.get('duration')),
+                        videoImageSupportedFileFormats: this.getVideoImageSupportedFileFormats(this.videoImageSupportedFileFormats),
+                        videoImageMaxFileSize: this.getVideoImageMaxFileSize()
                     })
                 );
                 this.hideHoverState();
                 return this;
+            },
+
+            getVideoImageSupportedFileFormats: function(supportedFormatsArray) {
+                var supportedFormatsArray = supportedFormatsArray.sort();
+                return {
+                    humanize: supportedFormatsArray.slice(0, -1).join(', ') + ' or ' + supportedFormatsArray.slice(-1),
+                    machine: supportedFormatsArray
+                }
+            },
+
+            getVideoImageMaxFileSize: function(videoImageMaxFileSize) {
+                return {
+                    humanize: videoImageMaxFileSize/(1024*1024) + ' MB',
+                    machine: videoImageMaxFileSize
+                }
+            },
+
+            getVideoImageMinFileSize: function(videoImageMinFileSize) {
+                return {
+                    humanize: videoImageMinFileSize/1024 + ' KB',
+                    machine: videoImageMinFileSize
+                }
             },
 
             getImageAltText: function() {
@@ -161,9 +190,15 @@ define(
             },
 
             imageSelected: function(event, data) {
-                this.readMessages([gettext('Video image upload started')]);
-                this.showUploadInProgressMessage();
-                data.submit();
+                var errorMessage = this.validateImageFile(data.files[0]);
+                if (!errorMessage) {
+                    data['global'] = false;   // Do not trigger global AJAX error handler
+                    this.readMessages([gettext('Video image upload started')]);
+                    this.showUploadInProgressMessage();
+                    data.submit();
+                } else {
+                    this.readMessages([errorMessage]);
+                }
             },
 
             imageUploadSucceeded: function(event, data) {
@@ -173,10 +208,15 @@ define(
                 this.readMessages([gettext('Video image upload completed')]);
             },
 
-            imageUploadFailed: function() {
+            imageUploadFailed: function(event, data) {
+                var errorText = JSON.parse(data.jqXHR.responseText)['error'];
                 this.action = 'error';
                 this.setActionInfo(this.action, true);
-                this.readMessages([gettext('Video image upload failed')]);
+                this.readMessages([gettext('Video image upload failed'), errorText]);
+                this.$el.css('border-top', 'none');
+                // TODO: remove error after some delay.
+                // TODO: remove if new error is coming.
+                $('<tr><td class="thumbnail-error" colspan="6">' + errorText + '</td></tr>').insertBefore(this.$el.parent());
             },
 
             showUploadInProgressMessage: function() {
@@ -207,6 +247,40 @@ define(
                 this.$('.thumbnail-action .action-text').html(this.actionsInfo[action].text);
                 this.$('.thumbnail-action .action-text-sr').text(additionalSRText || '');
                 this.$('.thumbnail-wrapper').attr('class', 'thumbnail-wrapper {action}'.replace('{action}', action));
+            },
+
+            validateImageFile: function(imageFile) {
+                var errorMessage = '';
+                // working here
+                var self = this,
+                    fileName,
+                    fileType;
+
+                fileName = file.name;
+                fileType = fileName.substr(fileName.lastIndexOf('.'));
+                // validate file type
+                if (!_.contains(self.getVideoImageSupportedFileFormats().machine, fileType)) {
+                    errorMessage = gettext(
+                        '{filename} is not in a supported file format. ' +
+                        'Supported file formats are {supportedFileFormats}.'
+                    )
+                    .replace('{filename}', fileName)
+                    .replace('{supportedFileFormats}', self.getVideoImageSupportedFileFormats().humanize);
+                } else if (file.size > self.getVideoImageMaxFileSize().machine) {
+                    errorMessage = gettext(
+                        '{filename} exceeds maximum size of {maxFileSizeInMB}.'
+                    )
+                    .replace('{filename}', fileName)
+                    .replace('{maxFileSizeInMB}', self.getVideoImageMaxFileSize().humanize);
+                } else if (file.size < self.getVideoImageMinFileSize().machine) {
+                    errorMessage = gettext(
+                        '{filename} subceeds minimum size of {minFileSizeInKB}.'
+                    )
+                    .replace('{filename}', fileName)
+                    .replace('{minFileSizeInKB}', self.getVideoImageMinFileSize().humanize);
+                }
+
+                return errorMessage;
             },
 
             readMessages: function(messages) {
