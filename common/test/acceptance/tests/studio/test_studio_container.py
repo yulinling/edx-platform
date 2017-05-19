@@ -3,26 +3,27 @@ Acceptance tests for Studio related to the container page.
 The container page is used both for displaying units, and
 for displaying containers within units.
 """
-from unittest import skip
-
 import datetime
 import ddt
+from nose.plugins.attrib import attr
+from unittest import skip
+
+from base_studio_test import ContainerBase
+
 from common.test.acceptance.fixtures.course import XBlockFixtureDesc
-from common.test.acceptance.pages.lms.courseware import CoursewarePage
 from common.test.acceptance.pages.lms.create_mode import ModeCreationPage
-from common.test.acceptance.pages.lms.staff_view import StaffCoursewarePage
 from common.test.acceptance.pages.studio.component_editor import ComponentEditorView, ComponentVisibilityEditorView
 from common.test.acceptance.pages.studio.container import ContainerPage
 from common.test.acceptance.pages.studio.html_component_editor import HtmlComponentEditorView
 from common.test.acceptance.pages.studio.move_xblock import MoveModalView
 from common.test.acceptance.pages.studio.utils import add_discussion, drag
+from common.test.acceptance.pages.lms.courseware import CoursewarePage
+from common.test.acceptance.pages.lms.staff_view import StaffCoursewarePage
 from common.test.acceptance.tests.helpers import create_user_partition_json
-from nose.plugins.attrib import attr
+
 from xmodule.partitions.partitions import (
     Group, ENROLLMENT_TRACK_PARTITION_ID, MINIMUM_STATIC_PARTITION_ID
 )
-
-from base_studio_test import ContainerBase
 
 
 class NestedVerticalTest(ContainerBase):
@@ -650,7 +651,7 @@ class EnrollmentTrackVisibilityModalTest(BaseGroupConfigurationsTest):
         if not expected_groups:
             self.assertIsNone(component.get_partition_group_message)
         else:
-            self.assertEqual("Visible to: " + expected_groups, component.get_partition_group_message)
+            self.assertEqual("Access restricted to: " + expected_groups, component.get_partition_group_message)
 
     def test_setting_enrollment_tracks(self):
         """
