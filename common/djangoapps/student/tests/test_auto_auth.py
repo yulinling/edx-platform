@@ -168,18 +168,16 @@ class AutoAuthEnabledTestCase(AutoAuthTestCase):
                 course_roles[FORUM_ROLE_MODERATOR],
                 course_roles[FORUM_ROLE_ADMINISTRATOR]]))
 
-    @ddt.data(*COURSE_IDS_DDT)
-    @ddt.unpack
-    def test_json_response(self, course_id, course_key):  # pylint: disable=unused-argument
-        """Verify that we can get JSON back from the auto_auth page."""
-        response = self._auto_auth(HTTP_ACCEPT='application/json')
+    def test_json_response(self):
+        """ The view should return JSON. """
+        response = self._auto_auth()
         response_data = json.loads(response.content)
         for key in ['created_status', 'username', 'email', 'password', 'user_id', 'anonymous_id']:
             self.assertIn(key, response_data)
         user = User.objects.get(username=response_data['username'])
         self.assertDictContainsSubset(
             {
-                'created_status': "Logged in",
+                'created_status': 'Logged in',
                 'anonymous_id': anonymous_id_for_user(user, None),
             },
             response_data

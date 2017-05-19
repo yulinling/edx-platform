@@ -2270,21 +2270,15 @@ def auto_auth(request):
                 redirect_url = reverse('home')
 
         return redirect(redirect_url)
-    elif request.META.get('HTTP_ACCEPT') == 'application/json':
+    else:
         response = JsonResponse({
-            'created_status': u"Logged in" if login_when_done else "Created",
+            'created_status': 'Logged in' if login_when_done else 'Created',
             'username': username,
             'email': email,
             'password': password,
             'user_id': user.id,  # pylint: disable=no-member
             'anonymous_id': anonymous_id_for_user(user, None),
         })
-    else:
-        success_msg = u"{} user {} ({}) with password {} and user_id {}".format(
-            u"Logged in" if login_when_done else "Created",
-            username, email, password, user.id  # pylint: disable=no-member
-        )
-        response = HttpResponse(success_msg)
     response.set_cookie('csrftoken', csrf(request)['csrf_token'])
     return response
 
