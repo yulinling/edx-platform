@@ -63,7 +63,7 @@ def compute_all_grades_for_course(**kwargs):
     to cover all of the students in the course.
     """
     course_key = kwargs.pop('course_key')
-    batch_size = 100 # TODO: update?
+    batch_size = 100  # TODO: Update?
     enrollment_count = CourseEnrollment.objects.filter(course_id=course_key).count()
     for offset in six.moves.range(0, enrollment_count, batch_size):
         compute_grades_for_course_v2.apply_async(
