@@ -379,13 +379,13 @@ def videos_index_json(course):
     """
     Returns JSON in the following format:
     {
-        "videos": [{
-            "edx_video_id": "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa",
-            "client_video_id": "video.mp4",
-            "created": "1970-01-01T00:00:00Z",
-            "duration": 42.5,
-            "status": "upload",
-            "course_video_image_url": "https://video/images/1234.jpg"
+        'videos': [{
+            'edx_video_id': 'aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa',
+            'client_video_id': 'video.mp4',
+            'created': '1970-01-01T00:00:00Z',
+            'duration': 42.5,
+            'status': 'upload',
+            'course_video_image_url': 'https://video/images/1234.jpg'
         }]
     }
     """
