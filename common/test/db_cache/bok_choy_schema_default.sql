@@ -475,7 +475,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   CONSTRAINT `auth__content_type_id_508cf46651277a81_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=984 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=990 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `auth_registration`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -944,6 +944,32 @@ CREATE TABLE `celery_tasksetmeta` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `taskset_id` (`taskset_id`),
   KEY `celery_tasksetmeta_662f707d` (`hidden`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `celery_utils_chorddata`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `celery_utils_chorddata` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `serialized_callback` longtext NOT NULL,
+  `callback_result_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `callback_result_id` (`callback_result_id`),
+  CONSTRAINT `celery_callback_result_id_230f1d5ec4608165_fk_celery_taskmeta_id` FOREIGN KEY (`callback_result_id`) REFERENCES `celery_taskmeta` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `celery_utils_chorddata_completed_results`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `celery_utils_chorddata_completed_results` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `chorddata_id` int(11) NOT NULL,
+  `taskmeta_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `chorddata_id` (`chorddata_id`,`taskmeta_id`),
+  KEY `celery_utils__taskmeta_id_16beefb23621d690_fk_celery_taskmeta_id` (`taskmeta_id`),
+  CONSTRAINT `celery_chorddata_id_2abad2f2a442ac5_fk_celery_utils_chorddata_id` FOREIGN KEY (`chorddata_id`) REFERENCES `celery_utils_chorddata` (`id`),
+  CONSTRAINT `celery_utils__taskmeta_id_16beefb23621d690_fk_celery_taskmeta_id` FOREIGN KEY (`taskmeta_id`) REFERENCES `celery_taskmeta` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `celery_utils_failedtask`;
@@ -2001,7 +2027,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_45f3b1d93ec8c61c_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=327 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=329 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `django_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2012,7 +2038,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=266 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=271 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `django_openid_auth_association`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2117,8 +2143,6 @@ CREATE TABLE `djcelery_periodictask` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL,
   `task` varchar(200) NOT NULL,
-  `interval_id` int(11) DEFAULT NULL,
-  `crontab_id` int(11) DEFAULT NULL,
   `args` longtext NOT NULL,
   `kwargs` longtext NOT NULL,
   `queue` varchar(200) DEFAULT NULL,
@@ -2130,10 +2154,12 @@ CREATE TABLE `djcelery_periodictask` (
   `total_run_count` int(10) unsigned NOT NULL,
   `date_changed` datetime(6) NOT NULL,
   `description` longtext NOT NULL,
+  `crontab_id` int(11) DEFAULT NULL,
+  `interval_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `djc_interval_id_20cfc1cad060dfad_fk_djcelery_intervalschedule_id` (`interval_id`),
   KEY `djcel_crontab_id_1d8228f5b44b680a_fk_djcelery_crontabschedule_id` (`crontab_id`),
+  KEY `djc_interval_id_20cfc1cad060dfad_fk_djcelery_intervalschedule_id` (`interval_id`),
   CONSTRAINT `djc_interval_id_20cfc1cad060dfad_fk_djcelery_intervalschedule_id` FOREIGN KEY (`interval_id`) REFERENCES `djcelery_intervalschedule` (`id`),
   CONSTRAINT `djcel_crontab_id_1d8228f5b44b680a_fk_djcelery_crontabschedule_id` FOREIGN KEY (`crontab_id`) REFERENCES `djcelery_crontabschedule` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -2164,15 +2190,15 @@ CREATE TABLE `djcelery_taskstate` (
   `traceback` longtext,
   `runtime` double DEFAULT NULL,
   `retries` int(11) NOT NULL,
-  `worker_id` int(11) DEFAULT NULL,
   `hidden` tinyint(1) NOT NULL,
+  `worker_id` int(11),
   PRIMARY KEY (`id`),
   UNIQUE KEY `task_id` (`task_id`),
-  KEY `djcelery_t_worker_id_30050731b1c3d3d9_fk_djcelery_workerstate_id` (`worker_id`),
   KEY `djcelery_taskstate_9ed39e2e` (`state`),
   KEY `djcelery_taskstate_b068931c` (`name`),
   KEY `djcelery_taskstate_863bb2ee` (`tstamp`),
   KEY `djcelery_taskstate_662f707d` (`hidden`),
+  KEY `djcelery_taskstate_ce77e6ef` (`worker_id`),
   CONSTRAINT `djcelery_t_worker_id_30050731b1c3d3d9_fk_djcelery_workerstate_id` FOREIGN KEY (`worker_id`) REFERENCES `djcelery_workerstate` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -4830,6 +4856,7 @@ CREATE TABLE `third_party_auth_ltiproviderconfig` (
   `site_id` int(11) NOT NULL,
   `drop_existing_session` tinyint(1) NOT NULL,
   `max_session_length` int(10) unsigned DEFAULT NULL,
+  `skip_hinted_login_dialog` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `third_party_auth__changed_by_id_7749e09fd5f71ab0_fk_auth_user_id` (`changed_by_id`),
   KEY `third_party_auth_ltiproviderconfig_fe8da584` (`lti_hostname`),
@@ -4861,6 +4888,7 @@ CREATE TABLE `third_party_auth_oauth2providerconfig` (
   `site_id` int(11) NOT NULL,
   `drop_existing_session` tinyint(1) NOT NULL,
   `max_session_length` int(10) unsigned DEFAULT NULL,
+  `skip_hinted_login_dialog` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `third_party_auth__changed_by_id_17044d1cd96e8d57_fk_auth_user_id` (`changed_by_id`),
   KEY `third_party_auth_oauth2providerconfig_abcd61c0` (`backend_name`),
@@ -4935,6 +4963,7 @@ CREATE TABLE `third_party_auth_samlproviderconfig` (
   `identity_provider_type` varchar(128) NOT NULL,
   `drop_existing_session` tinyint(1) NOT NULL,
   `max_session_length` int(10) unsigned DEFAULT NULL,
+  `skip_hinted_login_dialog` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `third_party_auth__changed_by_id_508190ecd0b0e845_fk_auth_user_id` (`changed_by_id`),
   KEY `third_party_auth_samlproviderconfig_098674f1` (`idp_slug`),
@@ -5662,6 +5691,21 @@ CREATE TABLE `workflow_assessmentworkflowstep` (
   PRIMARY KEY (`id`),
   KEY `w_workflow_id_4939c36cf6220ba3_fk_workflow_assessmentworkflow_id` (`workflow_id`),
   CONSTRAINT `w_workflow_id_4939c36cf6220ba3_fk_workflow_assessmentworkflow_id` FOREIGN KEY (`workflow_id`) REFERENCES `workflow_assessmentworkflow` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `xblock_config_courseeditltifieldsenabledflag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `xblock_config_courseeditltifieldsenabledflag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `change_date` datetime(6) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `course_id` varchar(255) NOT NULL,
+  `changed_by_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `xblock_config_cou_changed_by_id_124d91bd160908dd_fk_auth_user_id` (`changed_by_id`),
+  KEY `xblock_config_courseeditltifieldsenabledflag_ea134da7` (`course_id`),
+  CONSTRAINT `xblock_config_cou_changed_by_id_124d91bd160908dd_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `xblock_config_studioconfig`;
