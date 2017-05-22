@@ -166,6 +166,10 @@ def course_discussions_settings_handler(request, course_key_string):
             settings_to_change['always_divide_inline_discussions'] = request.json.get(
                 'always_divide_inline_discussions'
             )
+        if 'division_scheme' in request.json:
+            settings_to_change['division_scheme'] = request.json.get(
+                'division_scheme'
+            )
 
         if not settings_to_change:
             return JsonResponse({"error": unicode("Bad Request")}, 400)

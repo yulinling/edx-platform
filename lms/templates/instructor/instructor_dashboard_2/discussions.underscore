@@ -19,7 +19,7 @@
         </fieldset>
     </div>
     <div class="topic-division-nav">
-        <div class="cohort-course-wide-discussions-nav"></div>
-        <div class="cohort-inline-discussions-nav"></div>
+        <div class="course-wide-discussions-nav"></div>
+        <div class="inline-discussions-nav"></div>
     </div>
 </div>
