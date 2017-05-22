@@ -236,7 +236,7 @@ description_max_length = 250
             % if endorsement:
               <span>"${endorsement_quote}"</span>
                 % if endorser:
-                  <img class="visible-sm pull-left" src="${endorsement_image}" width="40" height="40"/>
+                  <img class="visible-sm pull-left" src="${endorsement_image}" width="40" height="40" alt="${_('Endorser Image')}"/>
                   <span class="writer">
                     ${endorsement_name},
                     ${endorsement_position},
@@ -367,49 +367,49 @@ description_max_length = 250
         program_type=program_type
       )}
     </h3>
-      <div class="course-slider-xs">
-        % for course in courses:
-          % if course.get('course_runs'):
-            <div class="course-card">
-              <div class="course-content">
-                <div class="col-full-sm">
-                  <h4 class="hd title">
-                    <a href="/courses/${course['course_runs'][0]['key']}/about"> ${course['title']}</a>
-                    <small>
-                      <span>
-                        <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        ${Text(_('Starts {course_start_datetime}')).format(
-                          course_start_datetime=datetime.strptime(course['course_runs'][0]['start'], '%Y-%m-%dT%H:%M:%SZ').strftime('%B %-d, %Y')
-                        )}
-                      </span>
+    <div class="course-cards">
+      % for course in courses:
+        % if course.get('course_runs'):
+          <div class="course-card">
+            <div class="course-content">
+              <div class="col-full-sm">
+                <h4 class="hd title">
+                  <a href="/courses/${course['course_runs'][0]['key']}/about"> ${course['title']}</a>
+                  <small>
+                    <span>
+                      <i class="fa fa-clock-o" aria-hidden="true"></i>
+                      ${Text(_('Starts {course_start_datetime}')).format(
+                        course_start_datetime=datetime.strptime(course['course_runs'][0]['start'], '%Y-%m-%dT%H:%M:%SZ').strftime('%B %-d, %Y')
+                      )}
+                    </span>
 
-                      %if course['course_runs'][0]['pacing_type'] == "instructor_paced":
-                        <span>${_('Instructor - Paced')}</span>
-                      %else:
-                        <span>${_('Self - Paced')}</span>
-                      %endif
-                    </small>
-                  </h4>
-                  <p class="copy-meta">
-                    % if course['course_runs'][0]['short_description']:
-                      ${course['course_runs'][0]['short_description']}
+                    %if course['course_runs'][0]['pacing_type'] == "instructor_paced":
+                      <span>${_('Instructor - Paced')}</span>
+                    %else:
+                      <span>${_('Self - Paced')}</span>
+                    %endif
+                  </small>
+                </h4>
+                <p class="copy-meta">
+                  % if course['course_runs'][0]['short_description']:
+                    ${course['course_runs'][0]['short_description']}
+                  % endif
+                </p>
+                <p class="copy-meta-mobile">
+                  % if course['course_runs'][0]['short_description']:
+                    ${course['course_runs'][0]['short_description'][:description_max_length]}
+                    % if len(course['course_runs'][0]['short_description']) > description_max_length:
+                      ...
                     % endif
-                  </p>
-                  <p class="copy-meta-mobile">
-                    % if course['course_runs'][0]['short_description']:
-                      ${course['course_runs'][0]['short_description'][:description_max_length]}
-                      % if len(course['course_runs'][0]['short_description']) > description_max_length:
-                        ...
-                      % endif
-                    % endif
-                  </p>
-                </div>
+                  % endif
+                </p>
               </div>
             </div>
-          % endif
-        % endfor
-      </div>
-      <span class="pagingInfo"></span>
+          </div>
+        % endif
+      % endfor
+    </div>
+    <span class="pagingInfo"></span>
   </div>
 
   <section id="video-modal" class="modal modal-custom custom-video-modal">

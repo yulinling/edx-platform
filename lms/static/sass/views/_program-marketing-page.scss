@@ -180,7 +180,6 @@
         padding: 10px;
         margin-bottom: 30px;
         border: 1px solid palette(grayscale, back);
-        vertical-align: top;
         @include box-shadow(0, 1px, 5px, rgba(0, 0, 0, 0.4));
         border-radius: 4px;
         @media (min-width: 768px) {
@@ -191,22 +190,14 @@
         }
 
         .title {
-            color: palette(primary, dark);
             margin-bottom: 10px;
             font-size: 18px;
             text-decoration: underline;
             a{
               color: #005686;
             }
-            @media (min-width: 768px) {
-                font-size: 1.5em;
-            }
-            @media (min-width: 1024px) {
-                font-size: 2.25rem;
-            }
 
             small {
-                color: #4a4a4a;
                 display: block;
                 font-size: 0;
                 margin-top: 5px;
@@ -215,7 +206,6 @@
                     display: inline-block;
                     text-decoration: none;
                     font-size: 1rem !important;
-                    color: $gray;
                     &:first-child {
                         border-right: 1px solid #4a4a4a;
                         padding-right: 6px;
@@ -233,7 +223,6 @@
             margin-bottom: 0;
             font-weight: normal;
             font-size: 1rem;
-            color: $gray;
         }
 
         &:last-child {
@@ -252,7 +241,7 @@
             padding: 20px;
         }
 
-        .slick-track {
+        .course-cards {
             padding-top: 5px;
             @media (min-width: 768px) {
               width: 100% !important;
@@ -261,7 +250,6 @@
         }
 
         > .hd {
-            color: palette(primary, dark);
             padding: 0 1.25rem !important;
             margin-bottom: 15px;
             @media (min-width: 768px) {
@@ -287,9 +275,7 @@
             }
 
             .tbl-view {
-
                 .tbl-col {
-
                     .btn-enroll-now {
                         position: absolute;
                         left: 0;
@@ -363,7 +349,6 @@
       }
       &:focus{
         text-decoration: none;
-        outline: none;
       }
     }
     .no-padding{
@@ -551,7 +536,6 @@
               &.active,
               &:focus{
                   cursor: pointer;
-                  outline:0;
               }
 
               &:before {
@@ -794,7 +778,7 @@
             margin-bottom: 33px;
             line-height: 1.25em;
             height: 40px;
-            color: #646464;
+            color: palette(primary, dark);
             overflow: hidden;
           }
         }
@@ -809,14 +793,13 @@
           .availability,
           .program-logo {
             display: table-cell;
-            vertical-align: middle;
           }
 
           .availability {
             text-align: left;
             font-size: 0.9em;
             line-height: 20px;
-            color: #3d3e3f;
+            color: palette(primary, dark);
           }
 
           .program-logo {
@@ -910,7 +893,6 @@
             .avatar,
             .details {
                 @extend .tbl-col;
-                vertical-align: middle;
             }
 
             .avatar {
@@ -993,7 +975,7 @@
                 }
                 &.active{
                     .fa{
-                        color: $gray;
+                        color: palette(primary, dark);
                     }
                 }
             }
@@ -1047,7 +1029,7 @@
                 @extend .tbl-col;
                 display: block;
                 width: 100%;
-                color: #4a4a4a;
+                color: palette(primary, dark);
                 line-height: 1.4;
 
                 @media (min-width: 768px) {
@@ -1067,7 +1049,7 @@
 
                 + a {
                     @media (max-width: 767px) {
-                        color: #4a4a4a;
+                        color: palette(primary, dark);
                     }
                 }
 
@@ -1083,7 +1065,7 @@
                     }
                     @media (min-width: 768px) {
                         width: 48%;
-                        color: #4a4a4a;
+                        color: palette(primary, dark);
                         margin-bottom: 0;
                         font-size: 1.024em;
                     }
@@ -1573,14 +1555,12 @@
           margin-right: 0 !important;
         }
         .title{
-          font-size: 1.15rem;
           a{
              height: auto;
              max-height: 50px;
              overflow: hidden;
              display: block;
              color: #005686;
-             font-weight:600;
              text-decoration: underline;
           }
           small{
