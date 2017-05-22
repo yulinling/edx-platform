@@ -2,28 +2,13 @@
 Tests for discussion pages
 """
 
-import datetime
 from uuid import uuid4
 
+import datetime
+from flaky import flaky
 from nose.plugins.attrib import attr
 from nose.tools import nottest
 from pytz import UTC
-from flaky import flaky
-
-from common.test.acceptance.tests.discussion.helpers import BaseDiscussionTestCase
-from common.test.acceptance.tests.helpers import UniqueCourseTest, get_modal_alert
-from common.test.acceptance.pages.lms.auto_auth import AutoAuthPage
-from common.test.acceptance.pages.lms.courseware import CoursewarePage
-from common.test.acceptance.pages.lms.discussion import (
-    DiscussionTabSingleThreadPage,
-    InlineDiscussionPage,
-    InlineDiscussionThreadPage,
-    DiscussionUserProfilePage,
-    DiscussionTabHomePage,
-    DiscussionSortPreferencePage,
-)
-from common.test.acceptance.pages.lms.learner_profile import LearnerProfilePage
-from common.test.acceptance.pages.lms.tab_nav import TabNavPage
 
 from common.test.acceptance.fixtures.course import CourseFixture, XBlockFixtureDesc
 from common.test.acceptance.fixtures.discussion import (
@@ -34,12 +19,22 @@ from common.test.acceptance.fixtures.discussion import (
     Response,
     Comment,
     SearchResult,
-    MultipleThreadFixture,
 )
-
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.lms.courseware import CoursewarePage
+from common.test.acceptance.pages.lms.discussion import (
+    DiscussionTabSingleThreadPage,
+    InlineDiscussionPage,
+    DiscussionUserProfilePage,
+    DiscussionTabHomePage,
+    DiscussionSortPreferencePage,
+)
+from common.test.acceptance.pages.lms.learner_profile import LearnerProfilePage
+from common.test.acceptance.pages.lms.tab_nav import TabNavPage
 from common.test.acceptance.tests.discussion.helpers import BaseDiscussionMixin
+from common.test.acceptance.tests.discussion.helpers import BaseDiscussionTestCase
+from common.test.acceptance.tests.helpers import UniqueCourseTest, get_modal_alert
 from common.test.acceptance.tests.helpers import skip_if_browser
-
 
 THREAD_CONTENT_WITH_LATEX = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation

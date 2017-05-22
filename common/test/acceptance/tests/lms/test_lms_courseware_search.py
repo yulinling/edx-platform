@@ -10,7 +10,7 @@ from common.test.acceptance.tests.helpers import UniqueCourseTest, remove_file
 from common.test.acceptance.pages.common.logout import LogoutPage
 from common.test.acceptance.pages.common.utils import click_css
 from common.test.acceptance.pages.studio.utils import add_html_component, type_in_codemirror
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.pages.studio.overview import CourseOutlinePage as StudioCourseOutlinePage
 from common.test.acceptance.pages.studio.container import ContainerPage
 from common.test.acceptance.pages.lms.courseware_search import CoursewareSearchPage

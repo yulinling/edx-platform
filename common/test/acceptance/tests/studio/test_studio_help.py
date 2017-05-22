@@ -33,7 +33,7 @@ from common.test.acceptance.tests.helpers import (
     url_for_help,
 )
 from common.test.acceptance.pages.studio.import_export import ExportLibraryPage, ImportLibraryPage
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 
 
 def _get_expected_documentation_url(path):

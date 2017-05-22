@@ -7,7 +7,7 @@ Tests the "preview" selector in the LMS that allows changing between Staff, Lear
 from nose.plugins.attrib import attr
 
 from common.test.acceptance.tests.helpers import UniqueCourseTest, create_user_partition_json
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.pages.lms.courseware import CoursewarePage
 from common.test.acceptance.pages.lms.instructor_dashboard import InstructorDashboardPage
 from common.test.acceptance.pages.lms.staff_view import StaffCoursewarePage

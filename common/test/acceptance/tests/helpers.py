@@ -20,7 +20,7 @@ from bok_choy.web_app_test import WebAppTest
 from bok_choy.promise import EmptyPromise, Promise
 from bok_choy.page_object import XSS_INJECTION
 from capa.tests.response_xml_factory import MultipleChoiceResponseXMLFactory
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.fixtures.course import XBlockFixtureDesc
 from opaque_keys.edx.locator import CourseLocator
 from pymongo import MongoClient, ASCENDING

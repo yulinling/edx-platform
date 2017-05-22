@@ -8,7 +8,7 @@ from common.test.acceptance.fixtures.course import CourseFixture, XBlockFixtureD
 from common.test.acceptance.pages.lms.courseware import CoursewarePage
 from common.test.acceptance.pages.lms.conditional import ConditionalPage, POLL_ANSWER
 from common.test.acceptance.pages.lms.problem import ProblemPage
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 
 
 class ConditionalTest(UniqueCourseTest):

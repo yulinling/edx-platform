@@ -17,7 +17,7 @@ from nose.plugins.attrib import attr
 
 from common.test.acceptance.tests.studio.base_studio_test import ContainerBase
 
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage as StudioAutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage as StudioAutoAuthPage
 
 
 @attr(shard=1)

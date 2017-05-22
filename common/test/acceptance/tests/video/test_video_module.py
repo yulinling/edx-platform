@@ -3,25 +3,24 @@
 """
 Acceptance tests for Video.
 """
+from unittest import skipIf, skip
+
 import os
 from ddt import ddt, unpack, data
-
+from flaky import flaky
 from mock import patch
 from nose.plugins.attrib import attr
-from unittest import skipIf, skip
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from common.test.acceptance.tests.helpers import UniqueCourseTest, is_youtube_available, YouTubeStubConfig
-from common.test.acceptance.pages.lms.video.video import VideoPage
-from common.test.acceptance.pages.lms.tab_nav import TabNavPage
-from common.test.acceptance.pages.lms.courseware import CoursewarePage
-from common.test.acceptance.pages.lms.auto_auth import AutoAuthPage
-from common.test.acceptance.pages.lms.course_info import CourseInfoPage
+from selenium.webdriver.common.by import By
+
 from common.test.acceptance.fixtures.course import CourseFixture, XBlockFixtureDesc
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.lms.course_info import CourseInfoPage
+from common.test.acceptance.pages.lms.courseware import CoursewarePage
+from common.test.acceptance.pages.lms.tab_nav import TabNavPage
+from common.test.acceptance.pages.lms.video.video import VideoPage
+from common.test.acceptance.tests.helpers import UniqueCourseTest, is_youtube_available, YouTubeStubConfig
 from common.test.acceptance.tests.helpers import skip_if_browser
-
-from flaky import flaky
-
 
 VIDEO_SOURCE_PORT = 8777
 

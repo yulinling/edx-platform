@@ -17,7 +17,7 @@ from nose.plugins.attrib import attr
 from common.test.acceptance.tests.studio.base_studio_test import ContainerBase
 
 from common.test.acceptance.pages.studio.settings_group_configurations import GroupConfigurationsPage
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage as StudioAutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage as StudioAutoAuthPage
 from common.test.acceptance.fixtures import LMS_BASE_URL
 from common.test.acceptance.pages.studio.component_editor import ComponentVisibilityEditorView
 from common.test.acceptance.pages.lms.instructor_dashboard import InstructorDashboardPage

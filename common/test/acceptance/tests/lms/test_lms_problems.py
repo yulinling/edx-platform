@@ -8,7 +8,7 @@ from nose.plugins.attrib import attr
 from textwrap import dedent
 
 from common.test.acceptance.tests.helpers import UniqueCourseTest
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.pages.lms.courseware import CoursewarePage
 from common.test.acceptance.pages.lms.problem import ProblemPage
 from common.test.acceptance.pages.lms.login_and_register import CombinedLoginAndRegisterPage

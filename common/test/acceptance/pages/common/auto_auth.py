@@ -1,11 +1,14 @@
 """
 Auto-auth page (used to automatically log in during testing).
 """
-
-import re
+import json
 import urllib
+
+import os
 from bok_choy.page_object import PageObject, unguarded, XSS_INJECTION
-from common.test.acceptance.pages.lms import AUTH_BASE_URL
+
+# The URL used for user auth in testing
+AUTH_BASE_URL = os.environ.get('test_url', 'http://localhost:8031')
 
 
 class AutoAuthPage(PageObject):
@@ -14,8 +17,6 @@ class AutoAuthPage(PageObject):
     When allowed via the django settings file, visiting
     this url will create a user and log them in.
     """
-
-    CONTENT_REGEX = r'.+? user (?P<username>\S+) \((?P<email>.+?)\) with password \S+ and user_id (?P<user_id>\d+)$'
 
     def __init__(self, browser, username=None, email=None, password=None, full_name=None, staff=None, course_id=None,
                  enrollment_mode=None, roles=None, is_active=None):
@@ -84,14 +85,8 @@ class AutoAuthPage(PageObject):
     @unguarded
     def get_user_info(self):
         """Parse the auto auth page body to extract relevant details about the user that was logged in."""
-        message = self.q(css='BODY').text[0]
-        match = re.match(self.CONTENT_REGEX, message)
-        if not match:
-            return None
-        else:
-            user_info = match.groupdict()
-            user_info['user_id'] = int(user_info['user_id'])
-            return user_info
+        body = self.q(css='BODY').text[0]
+        return json.loads(body)
 
     @property
     def user_info(self):

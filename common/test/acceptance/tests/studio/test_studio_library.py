@@ -7,7 +7,7 @@ from flaky import flaky
 
 from common.test.acceptance.tests.studio.base_studio_test import StudioLibraryTest
 from common.test.acceptance.fixtures.course import XBlockFixtureDesc
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.pages.studio.utils import add_component
 from common.test.acceptance.pages.studio.library import LibraryEditPage
 from common.test.acceptance.pages.studio.users import LibraryUsersPage

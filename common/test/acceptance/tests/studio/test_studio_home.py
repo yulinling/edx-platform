@@ -5,7 +5,7 @@ from flaky import flaky
 from opaque_keys.edx.locator import LibraryLocator
 from uuid import uuid4
 
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.pages.studio.library import LibraryEditPage
 from common.test.acceptance.pages.studio.index import DashboardPage
 from common.test.acceptance.pages.lms.account_settings import AccountSettingsPage

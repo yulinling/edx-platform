@@ -7,7 +7,7 @@ import textwrap
 
 from nose.plugins.attrib import attr
 from common.test.acceptance.tests.helpers import UniqueCourseTest, TestWithSearchIndexMixin
-from common.test.acceptance.pages.studio.auto_auth import AutoAuthPage
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.pages.studio.overview import CourseOutlinePage as StudioCourseOutlinePage
 from common.test.acceptance.pages.studio.library import StudioLibraryContentEditor, StudioLibraryContainerXBlockWrapper
 from common.test.acceptance.pages.lms.course_home import CourseHomePage

@@ -3,8 +3,8 @@
 
 from urlparse import urlparse, parse_qsl
 
+from common.test.acceptance.pages.common.auto_auth import AutoAuthPage
 from common.test.acceptance.pages.lms.oauth2_confirmation import OAuth2Confirmation
-from common.test.acceptance.pages.lms.auto_auth import AutoAuthPage
 from common.test.acceptance.tests.helpers import AcceptanceTest
 
 
