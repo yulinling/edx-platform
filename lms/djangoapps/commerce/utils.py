@@ -61,7 +61,7 @@ class EcommerceService(object):
         return self.get_absolute_ecommerce_url(self.config.single_course_checkout_page)
 
     def checkout_page_url(self, skus):
-        """ Construct the URL to the ecommerce checkout page and include a product.
+        """ Construct the URL to the ecommerce checkout page and include products.
 
         Args:
             skus (list): List of product SKUs
