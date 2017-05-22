@@ -26,7 +26,7 @@ from openedx.features.course_experience import UNIFIED_COURSE_EXPERIENCE_FLAG
                 <div class="has-breadcrumbs">
                     <div class="breadcrumbs">
                         <span class="nav-item">
-                            <a href="${course_url}">Course</a>
+                            <a href="${course_url}">${course.display_name_with_default}</a>
                         </span>
                         <span class="icon fa fa-angle-right" aria-hidden="true"></span>
                         <span class="nav-item">${_('Course Updates')}</span>
