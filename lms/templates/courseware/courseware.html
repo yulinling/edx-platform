@@ -160,21 +160,19 @@ ${HTML(fragment.foot_html())}
                 <nav aria-label="${_('Course')}" class="sr-is-focusable" tabindex="-1">
                     <div class="has-breadcrumbs">
                         <div class="breadcrumbs">
-                            % if not waffle.flag_is_active(request, UNIFIED_COURSE_VIEW_FLAG):
+                            % if waffle.flag_is_active(request, UNIFIED_COURSE_VIEW_FLAG):
                                 <span class="nav-item">
-                                    <a href="${course_url}">${course.display_name}</a>
+                                    <a href="${course_url}">${course.display_name_with_default}</a>
                                 </span>
+                                <span class="icon fa fa-angle-right" aria-hidden="true"></span>
                             % endif
                             % if chapter:
-                                <span class="icon fa fa-angle-right" aria-hidden="true"></span>
                                 <span class="nav-item">
-                                    <a href="${course_url}#${unicode(chapter.location)}">${chapter.display_name}</a>
+                                    <a href="${course_url}#${unicode(chapter.location)}">${chapter.display_name_with_default}</a>
                                 </span>
-                            % endif
-                            % if section:
                                 <span class="icon fa fa-angle-right" aria-hidden="true"></span>
-                                <span class="nav-item nav-item-unit">${section.display_name}</span>
                             % endif
+                            <span class="nav-item nav-item-unit">${section_title}</span>
                         </div>
                     </div>
                 </nav>
